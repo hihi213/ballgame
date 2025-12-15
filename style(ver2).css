@@ -1,0 +1,126 @@
+
+        @import url('https://fonts.googleapis.com/css2?family=Diphylleia&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Diphylleia', serif;
+        }
+
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+            background-repeat: no-repeat;
+            background-size: cover;
+            /*z-index: -1; 영상앞에 위치하도록 넣었는데..*/
+        }
+
+        #footer {
+            width: 100%;
+            height: 20%;
+            position: relative;
+        }
+
+        #wellcome {
+            width: 80%;
+            height: 20%;
+        }
+
+        #section {
+            border-bottom: 10vw;
+            margin: 0 auto;
+            width: 100vw;
+            height: auto;
+            text-align: center;
+        }
+
+        #footer>#picbox {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: auto;
+            text-align: center;
+            width: 20vw;
+            height: 40vw;
+            margin: 0 auto;
+        }
+
+        #textbox {
+            position: relative;
+            margin-right: 10vw;
+            float: right;
+        }
+
+        #button {
+            margin-left: 2vw;
+            aspect-ratio: 2 / 1;
+            /*가로 세로 비율*/
+            width: 10vw;
+            font-size: 2vw;
+            /*5vw로 한 경우 웹브라우저 너비의 5%를 의미합니다. 여기서 v는 viewport를 의미합니다.*/
+        }
+
+        #text {
+            width: 20vw;
+            aspect-ratio: 5/ 1;
+            font-size: 2vW;
+            /*5vw로 한 경우 웹브라우저 너비의 5%를 의미합니다. 여기서 v는 viewport를 의미합니다.*/
+            text-align: center;
+            text-size-adjust: auto;
+            /*화면의 폭에 맞게 텍스트의 크기를 자동으로 조절한다.*/
+        }
+
+        #footer>#picbox>#nickname {
+            flex-shrink: 1;
+            text-size-adjust: auto;
+            font-size: 2vw;
+
+        }
+
+
+        #footer>#picbox>#knight {
+            max-width: 90%;
+            max-height: 90%;
+            flex-shrink: 1;
+        }
+
+        .ball {
+            max-width: 6vw;
+            max-height: 6vw;
+            position: absolute;
+        }
+
+
+        #video {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            margin: 0px auto;
+        }
+
+        #videobox {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+        }
+
+        #main_aside {
+            width: 30%;
+            position: relative;
+            float: right;
+        }
+
+        .textaside {
+            font-size: 2vW;
+            /*5vw로 한 경우 웹브라우저 너비의 5%를 의미합니다. 여기서 v는 viewport를 의미합니다.*/
+            text-align: center;
+            text-size-adjust: auto;
+            /*화면의 폭에 맞게 텍스트의 크기를 자동으로 조절한다.*/
+            background-color: aliceblue;
+            border-bottom: 1px black;
+        }
