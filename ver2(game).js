@@ -1,5 +1,3 @@
-
-
 const ASSETS = {
     balls: ["assets/redball.png", "assets/blackball.png", "assets/blueball.png"],
     monsters:  ["assets/monster1.webp", "assets/monster2.webp", "assets/monster3.webp", "assets/monster4.webp", "assets/monster5.webp"
@@ -158,7 +156,7 @@ elems.button.onclick = async function() {
     } else {
         elems.nickname.innerHTML = elems.text.value;
     }
-
+    elems.knightbox.style.height="auto";    
     elems.audio.src = ASSETS.audioBgmEasy;
     elems.text.style.display = "none";
     elems.button.style.display = "none";
@@ -174,9 +172,9 @@ elems.button.onclick = async function() {
     elems.wellcome.style.visibility = "hidden";
     
     // 게임 시작 위치로 플레이어 이동
-    player.width = "9.5vw";
+    //player.width = "9.5vw";
     player.box.style.width = player.width;
-    player.setCoord(0, 230); // y=230으로 이동
+    player.setCoord(0, 0);
 
     await wait(1000);
 
@@ -223,7 +221,7 @@ elems.button.onclick = async function() {
 
 function startGameLoop(index) {
     function loop() {
-        if (state.count[index] > 80) {
+        if (state.count[index] > 85) {
         state.count[index] = 0;
         makeball(index);
         } else {
@@ -252,25 +250,79 @@ function makeball(index) {
 //키보드 입력처리
 const [KEY_LEFT, KEY_UP, KEY_RIGHT, KEY_DOWN, KEY_ENTER] = [37, 38, 39, 40, 13];
 
-const ifkeydown = (event) => {
-    switch (event.keyCode) {
-        case KEY_LEFT:
-            player.move(-3.5); // 왼쪽 이동
-            break;
+//키보드와 스마트폰 터치 처리
+const InputHandler = {
+    // 설정값
+    touchInterval: null, // 터치 반복 실행용 타이머
+    touchSensitivity: 3.5, // 터치 이동 속도
 
-        case KEY_RIGHT:
-            player.move(3.5); // 오른쪽 이동
-            break;
+    init() {
+        // 1. 키보드 이벤트 등록
+        document.body.addEventListener('keydown', this.handleKeydown.bind(this));
+        
+        // 2. 터치 이벤트 등록 (패시브 옵션 false: 스크롤 방지용)
+        const body = document.body;
+        body.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+        body.addEventListener('touchend', this.stopTouch.bind(this));
+        body.addEventListener('touchcancel', this.stopTouch.bind(this));
+    },
 
-        case KEY_ENTER:
-            if (state.firstclick > 0) {
-                elems.button.onclick();
-                --state.firstclick;
-            }
-            break;
+    // [키보드] 로직 처리
+    handleKeydown(event) {
+        if (state.gameover) return;
+
+        switch (event.keyCode) {
+            case 37: // LEFT
+                player.move(-3.5);
+                break;
+            case 39: // RIGHT
+                player.move(3.5);
+                break;
+            case 13: // ENTER
+                if (state.firstclick > 0) {
+                    elems.button.onclick();
+                    --state.firstclick;
+                }
+                break;
+        }
+    },
+
+    // [터치] 시작 로직
+    handleTouchStart(e) {
+        // 게임오버거나 버튼/입력창 터치 시 무시
+        if (state.gameover || e.target === elems.button || e.target === elems.text) return;
+
+        // 브라우저 기본 스크롤/확대 방지
+        if (e.cancelable) e.preventDefault();
+
+        const touchX = e.touches[0].clientX;
+        const center = window.innerWidth / 2;
+
+        // 기존 움직임 초기화
+        this.stopTouch();
+
+        // 화면 왼쪽/오른쪽 판별하여 방향 결정
+        const direction = touchX < center ? -1 : 1;
+        const moveAmount = this.touchSensitivity * direction;
+
+        // 누르고 있는 동안 30ms마다 계속 이동 (부드러운 움직임)
+        this.touchInterval = setInterval(() => {
+            player.move(moveAmount);
+        }, 30);
+    },
+
+    // [터치] 종료 로직
+    stopTouch() {
+        if (this.touchInterval) {
+            clearInterval(this.touchInterval);
+            this.touchInterval = null;
+        }
     }
-}
-document.body.addEventListener('keydown', ifkeydown);
+};
+
+// 입력 핸들러 가동
+InputHandler.init();
+
 
 
 const CollisionManager = {
@@ -303,17 +355,15 @@ const CollisionManager = {
         for (let i = 0; i < elems.drops.length; i++) {
             const drop = elems.drops[i];
             
-            // 화면 상단(65%) 아래에 있는 물체만 검사
-            // style.top은 문자열(%)이므로 변환 필요.
-            // state.count[i]가 현재 top 위치를 가지고 있으므로 이를 활용
-            if (state.count[i] > 65) {
+            // 화면 상단(65%) 아래에 있는 물체만 검사를 했다가, 성능에 큰변화를 주지않아서 제거
+            //if (state.count[i] > 65) {
                 const dropRect = drop.getBoundingClientRect();
 
                 if (this.isColliding(playerRect, dropRect)) {
                     GameDirector.handleGameOver();
                     break; // 한 번 충돌하면 루프 종료
                 }
-            }
+            //}
         }
     },
 
@@ -404,7 +454,7 @@ const RankingUI = {
         const btn = this.createElement("button", "", "retry?");
         btn.id = "button"; // 기존 CSS ID 유지
         btn.onclick = () => location.reload(true);
-        elems.textbox.appendChild(btn);
+        elems.section.appendChild(btn);
     },
 
     // 전체 랭킹 화면 그리기 메인 함수
@@ -440,8 +490,6 @@ const GameDirector = {
         elems.audio.src = ASSETS.audioEnd;
         
         CollisionManager.stop();
-        document.body.removeEventListener('keydown', ifkeydown);
-        
         // 적 숨기기
         Array.from(elems.drops).forEach(el => el.style.display = "none");
     },
@@ -472,10 +520,9 @@ const GameDirector = {
         await wait(2000);
         elems.knightbox.style.visibility = "hidden";
         elems.videobox.style.visibility = "hidden";
-        
-        document.body.style.backgroundImage = `url('${ASSETS.bgImageLose}')`;
-        document.body.style.backgroundSize = "70% 100%";
-
+        document.body.style.backgroundImage = ""
+        elems.section.style.backgroundImage = `url('${ASSETS.bgImageLose}')`;;
+        elems.section.style.backgroundSize = "70% 100%"
         // 5. 랭킹 데이터 처리 및 렌더링
         const currentNickname = elems.nickname.innerHTML;
         const { currentRecord, top5 } = RankingService.registerScore(currentNickname, state.counttime);
