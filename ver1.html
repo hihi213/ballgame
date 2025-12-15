@@ -32,7 +32,7 @@ window.addEventListener('offline', () => {
         }
 
         body {
-            background-image: url('패배화면.webp');
+            background-image: url('assets/bgImageLose.webp');
             overflow: hidden;
             width: 100%;
             height: 100vh;
@@ -160,7 +160,7 @@ window.addEventListener('offline', () => {
     </div>
 
     <section id="section">
-        <img id="wellcome" src="wellcome.png" alt="w">
+        <img id="wellcome" src="assets/wellcome.png" alt="w">
     </section>
     <footer id="footer">
         <article id="textbox">
@@ -168,7 +168,7 @@ window.addEventListener('offline', () => {
             <button id="button" type="button">start!</button>
         </article>
         <div id="picbox">
-            <img id="knight" src="하찮공허.png" alt="g">
+            <img id="knight" src="assets/playerEasy1.png" alt="g">
             <p id="nickname"></p>
         </div>
     </footer>
@@ -211,7 +211,7 @@ window.addEventListener('offline', () => {
         window.addEventListener('offline', () => {
             console.log('오프라인상태');
         });
-        document.body.style.backgroundImage = "url('바탕.jpg')"
+        document.body.style.backgroundImage = "url('assets/bgImageBase.jpg')"
         // [...drops].forEach
         Array.from(drops).forEach(
             element => element.style.visibility = "hidden");//공이 처음에 안보이게
@@ -228,16 +228,16 @@ window.addEventListener('offline', () => {
             else {
                 nickname.innerHTML = text.value;
             }//값 닉네임에 저장
-            audio.src = "노래.mp3"
+            audio.src = "assets/beginMusic.mp3"
             text.style.display = "none";
             button.style.display = "none"
 
             setTimeout(() => {
-                knight.src = "하찮공허눈.png"
+                knight.src = "assets/playerEasy2.png"
             }, 1000);//1초뒤에 눈뜨게하기
 
             setTimeout(() => {
-                knight.src = "팔든공허.png"//눈뜬 2초뒤에 팔든공허로 바꾸기!!
+                knight.src = "assets/playerEasy3.png"//눈뜬 2초뒤에 팔든공허로 바꾸기!!
                 wellcome.style.visibility = "visible"//wellcome문구 뛰우기
             }, 2000);
 
@@ -307,22 +307,22 @@ window.addEventListener('offline', () => {
             real = true;//앞으로 공 몬스터로 바꾸기
             [0, 1, 2, 3].forEach(element =>
                 drops[element].src = monster[element]); //공몬스터로바꾸기
-            knight.src = "찐이야.png"//기사 이미지 바꾸기
+            knight.src = "assets/playerHard.png"//기사 이미지 바꾸기
             picbox.style.width = "7vw";//크기조절
             t = 0.25;//속도 더 빠르게
             //document.body.style.backgroundColor = "transparent"
             document.body.style.backgroundImage = ""//배경지우고 동영상배경으로 전환
-            video.src = "배경.mp4"
-            audio.src = "노래긴박.mp3"
+            video.src = "assets/bgVideo.mp4"
+            audio.src = "assets/audioHard.mp3"
         }
         //공 움직이기:처음에 x위치와 공색깔을 랜덤으로 주고
         //[y1]으로 위치를 1초마다 부여를 한다 
         let t = 0.15;//처음 공 속도
         count = [5, 5, 5, 5];//ball 만든 10초후 초기화
-        ball = ["redball.png", "blackball.png", "blueball.png"]
-        monster = ["굼벵이.webp", "맹독충사냥꾼.webp", "복수파리.webp", "붕붕파리.webp", "틱틱.webp"
-            , "어리석음.webp", "버섯전사.webp", "우오마.webp", "포복이끼.webp", "발더.webp", "생명씨앗.webp", "구더기.webp"]
-
+        ball = ["assets/redball.png", "assets/blackball.png", "assets/blueball.png"]
+        monster =  ["assets/monster1.webp", "assets/monster2.webp", "assets/monster3.webp", "assets/monster4.webp", "assets/monster5.webp"
+            , "assets/monster6.webp", "assets/monster7.webp", "assets/monster8.webp", "assets/monster9.webp", "assets/monster10.webp", 
+            "assets/monster11.webp", "assets/monster12.webp"]
         function makeball(a) {
             let num;
             num = Math.random();
@@ -363,7 +363,7 @@ window.addEventListener('offline', () => {
                 mutations.forEach(mutation => {//foreach 각각적용
                     //변경을 감지했을때 실행할 부분 // console.log(mutation.target);
                     //parseInt(으로 문자열비교가 아닌 숫자로 변환
-                    if (parseInt(mutation.target.style.top) > 65) {//좀더 좁은 범위부여
+                    //if (parseInt(mutation.target.style.top) > 65) {//좀더 좁은 범위부여
                         let n = mutation.target.getBoundingClientRect()//공의 위치정보 받기
                         kposition = knight.getBoundingClientRect()//기사의 x좌표 재기
                         if (n.bottom >= kposition.top && n.top <= (kposition.top + kposition.height)) {// 기사의 머리까지의 길이보다 낙하바닥의 길이가 커질때
@@ -376,7 +376,6 @@ window.addEventListener('offline', () => {
                         }
                         //if(mutation.target.getBoundingClientRect().top===knight)
                         //{}
-                    }
                     //else{console.log("no")}
                 })
             })
@@ -396,13 +395,12 @@ window.addEventListener('offline', () => {
             console.log("감시시작")
         }
         function theymet() {
-            audio.src = "엔딩.mp3"//노래바꾸기
             observers.forEach(obs => obs.disconnect());//observer.disconnect();//감시그만
             Array.from(drops).forEach(function (element) {
                 element.style.display = "none";
                 //이벤트제거 대신에 그냥 공을 안보이게 하자 감시가 안되므로 부딪침 이벤트 안일어남
             });
-            audio.src = ""//노래멈추기
+            audio.src = "assets/audioEnd.mp3"//노래바꾸기
             document.body.removeEventListener('keydown', ifkeydown)
 
             //흔들기
@@ -413,14 +411,14 @@ window.addEventListener('offline', () => {
 
 
             setTimeout(() => {
-                knight.src = "친족.webp"//충격받은 기사 이미지 전환
+                knight.src = "assets/playerGameover.webp"//충격받은 기사 이미지 전환
                 picbox.style.width = "9vw"//크기조절
             }, 2000)
 
             setTimeout(() => {
                 picbox.style.visibility = "hidden"//1초뒤 picbox 안보이게 하기
                 //그리고 두개골기사 배경화면으로 전환
-                document.body.style.backgroundImage = "url('패배화면.webp')";//url('패배화면.webp');
+                document.body.style.backgroundImage = "url('assets/bgImageLose.webp')";//url('assets/bgImageLose.webp');
                 document.body.style.backgroundSize = "70% 100%"
                 videobox.style.visibility = "hidden"
 

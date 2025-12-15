@@ -1,21 +1,20 @@
 
 
 const ASSETS = {
-    balls: ["redball.png", "blackball.png", "blueball.png"],
-    monsters: [
-        "굼벵이.webp", "맹독충사냥꾼.webp", "복수파리.webp", "붕붕파리.webp", "틱틱.webp",
-        "어리석음.webp", "버섯전사.webp", "우오마.webp", "포복이끼.webp", "발더.webp", "생명씨앗.webp", "구더기.webp"
-    ],
-    audioBgmEasy: "노래.mp3",
-    audioHard: "노래긴박.mp3",
-    audioEnd: "엔딩.mp3",
+    balls: ["assets/redball.png", "assets/blackball.png", "assets/blueball.png"],
+    monsters:  ["assets/monster1.webp", "assets/monster2.webp", "assets/monster3.webp", "assets/monster4.webp", "assets/monster5.webp"
+            , "assets/monster6.webp", "assets/monster7.webp", "assets/monster8.webp", "assets/monster9.webp", "assets/monster10.webp", 
+            "assets/monster11.webp", "assets/monster12.webp"],   
+    audioBgmEasy: "assets/beginMusic.mp3",
+    audioHard: "assets/audioHard.mp3",
+    audioEnd: "assets/audioEnd.mp3",
     // 배열 인덱스로 접근하기 위해 구조 유지
-    playerEasy: ["하찮공허.png","하찮공허눈.png", "팔든공허.png"], 
-    playerHard: "찐이야.png",
-    playerGameover:"친족.webp",
-    bgVideo: "배경.mp4",
-    bgImageLose: "패배화면.webp",
-    bgImageBase: "바탕.jpg"
+    playerEasy: ["assets/playerEasy1.png","assets/playerEasy2.png", "assets/playerEasy3.png"], 
+    playerHard: "assets/playerHard.png",
+    playerGameover:"assets/playerGameover.webp",
+    bgVideo: "assets/bgVideo.mp4",
+    bgImageLose: "assets/bgImageLose.webp",
+    bgImageBase: "assets/bgImageBase.jpg"
 };
 
 const elems = {
@@ -165,10 +164,10 @@ elems.button.onclick = async function() {
     elems.button.style.display = "none";
 
     await wait(1000);
-    player.setSkin(ASSETS.playerEasy[1]); // "하찮공허눈.png"
+    player.setSkin(ASSETS.playerEasy[1]); // "assets/playerEasy2.jpg"
 
     await wait(1000);
-    player.setSkin(ASSETS.playerEasy[2]); // "팔든공허.png"
+    player.setSkin(ASSETS.playerEasy[2]); // "assets/playerEasy3.png"
     elems.wellcome.style.visibility = "visible";
 
     await wait(2000);
