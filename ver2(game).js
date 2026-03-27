@@ -221,7 +221,7 @@ elems.button.onclick = async function() {
 
 function startGameLoop(index) {
     function loop() {
-        if (state.count[index] > 85) {
+        if (state.count[index] > 85) { //85까지 낙하하게 조정
         state.count[index] = 0;
         makeball(index);
         } else {
